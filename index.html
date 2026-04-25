@@ -3,258 +3,285 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#0a0a0a">
-    <title>WebCode Pro</title>
+    <meta name="theme-color" content="#1e1e1e">
+    <title>XOLERI𝞗 WebCode Pro</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-primary: #0a0a0a;
-            --bg-secondary: #111111;
-            --bg-tertiary: #1a1a1a;
-            --border-color: #1f1f1f;
-            --text-primary: #e5e5e5;
-            --text-secondary: #a1a1aa;
-            --text-muted: #71717a;
-            --accent: #d946ef;
-            --accent-light: #ec4899;
-            --success: #22c55e;
-            --error: #ef4444;
+            --bg-primary: #1e1e1e;
+            --bg-secondary: #252526;
+            --bg-tertiary: #2d2d30;
+            --bg-sidebar: #252526;
+            --bg-activity: #333333;
+            --border: #3c3c3c;
+            --text-primary: #cccccc;
+            --text-secondary: #858585;
+            --accent: #0e639c;
+            --accent-hover: #1177bb;
+            --tab-active: #1e1e1e;
+            --tab-inactive: #2d2d30;
+            --line-number: #858585;
+            --cursor: #ffffff;
+            --selection: #264f78;
             --dot-red: #ff5f57;
             --dot-yellow: #febc2e;
             --dot-green: #28ca41;
+            --font-ui: 'Segoe UI', sans-serif;
+            --font-code: 'JetBrains Mono', monospace;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html, body {
+            width: 100%; height: 100%;
             background: var(--bg-primary);
             color: var(--text-primary);
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        /* Splash Screen */
-        #splash {
-            position: fixed;
-            inset: 0;
-            background: var(--bg-primary);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease;
-        }
-
-        #splash.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .logo {
-            width: 100px;
-            height: 100px;
-            background: linear-gradient(135deg, var(--accent), var(--accent-light));
-            border-radius: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 40px;
-            font-weight: 700;
-            margin-bottom: 32px;
-            box-shadow: 0 0 60px rgba(217, 70, 239, 0.3);
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .title {
-            font-size: 24px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            margin-bottom: 8px;
-        }
-
-        .subtitle {
-            font-size: 12px;
-            color: var(--text-muted);
-            letter-spacing: 4px;
-            margin-bottom: 40px;
-        }
-
-        .start-btn {
-            padding: 14px 40px;
-            background: linear-gradient(135deg, var(--accent), var(--accent-light));
-            border: none;
-            border-radius: 12px;
-            color: #fff;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .start-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(217, 70, 239, 0.4);
-        }
-
-        /* Main App */
-        #app {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.5s ease;
-        }
-
-        #app.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        /* Header */
-        .header {
-            height: 50px;
-            background: var(--bg-secondary);
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 16px;
-            -webkit-app-region: drag;
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            -webkit-app-region: no-drag;
-        }
-
-        .dots {
-            display: flex;
-            gap: 8px;
-        }
-
-        .dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            border: none;
-            cursor: pointer;
-            transition: transform 0.15s;
-        }
-
-        .dot:hover { transform: scale(1.2); }
-        .dot.red { background: var(--dot-red); }
-        .dot.yellow { background: var(--dot-yellow); }
-        .dot.green { background: var(--dot-green); }
-
-        .brand {
+            font-family: var(--font-ui);
             font-size: 13px;
-            font-weight: 600;
-            letter-spacing: 1px;
-        }
-
-        .brand span { color: var(--accent); }
-
-        /* Workspace */
-        .workspace {
-            flex: 1;
-            display: flex;
-            gap: 1px;
-            background: var(--border-color);
-        }
-
-        .panel {
-            flex: 1;
-            background: var(--bg-secondary);
-            display: flex;
-            flex-direction: column;
             overflow: hidden;
         }
 
-        .panel-header {
-            height: 36px;
+        /* Main Layout */
+        .app { display: flex; flex-direction: column; height: 100vh; }
+        
+        /* Title Bar */
+        .titlebar {
+            height: 32px;
             background: var(--bg-tertiary);
-            border-bottom: 1px solid var(--border-color);
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 0 12px;
+            -webkit-app-region: drag;
+            user-select: none;
         }
 
-        .panel-title {
+        .titlebar-left { display: flex; align-items: center; gap: 12px; -webkit-app-region: no-drag; }
+        
+        .dots { display: flex; gap: 8px; }
+        .dot { width: 12px; height: 12px; border-radius: 50%; border: none; cursor: pointer; }
+        .dot.red { background: var(--dot-red); }
+        .dot.yellow { background: var(--dot-yellow); }
+        .dot.green { background: var(--dot-green); }
+        
+        .title { font-size: 12px; color: var(--text-secondary); }
+
+        .titlebar-right { display: flex; -webkit-app-region: no-drag; }
+        .titlebar-btn {
+            width: 46px; height: 32px;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 10px;
+        }
+        .titlebar-btn:hover { background: rgba(255,255,255,0.1); }
+
+        /* Menu Bar */
+        .menubar {
+            height: 35px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+        }
+
+        .menu-item {
+            padding: 6px 12px;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-size: 13px;
+            border-radius: 4px;
+        }
+        .menu-item:hover { background: rgba(255,255,255,0.1); }
+
+        .search-box {
+            margin-left: auto;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 4px 10px;
+            color: var(--text-primary);
+            font-size: 12px;
+            width: 200px;
+        }
+
+        /* Main Content */
+        .main {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Activity Bar */
+        .activitybar {
+            width: 50px;
+            background: var(--bg-activity);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 10px;
+            gap: 10px;
+        }
+
+        .activity-icon {
+            width: 24px; height: 24px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 4px;
+        }
+        .activity-icon:hover, .activity-icon.active { color: var(--text-primary); background: rgba(255,255,255,0.1); }
+
+        /* Sidebar */
+        .sidebar {
+            width: 220px;
+            background: var(--bg-sidebar);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: 10px 16px;
             font-size: 11px;
             font-weight: 600;
-            letter-spacing: 1.5px;
-            color: var(--text-muted);
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
         }
 
+        .file-list { flex: 1; overflow: auto; }
+
+        .file-item {
+            padding: 4px 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+        }
+        .file-item:hover { background: rgba(255,255,255,0.04); }
+        .file-item.active { background: var(--selection); }
+        .file-icon { width: 16px; text-align: center; }
+
+        /* Editor Area */
         .editor-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-primary);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .tab {
+            padding: 8px 16px;
+            background: var(--tab-inactive);
+            border-right: 1px solid var(--border-color);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            min-width: 100px;
+        }
+        .tab.active { background: var(--tab-active); }
+        .tab-close {
+            width: 16px; height: 16px;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 10px;
+        }
+        .tab-close:hover { background: rgba(255,255,255,0.2); }
+
+        /* Editor + Preview Split */
+        .split {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .editor-panel, .preview-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .preview-panel { border-left: 1px solid var(--border-color); }
+
+        .panel-header {
+            height: 35px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+        }
+
+        .editor-content {
             flex: 1;
             display: flex;
             overflow: hidden;
         }
 
         .line-numbers {
-            width: 45px;
-            background: var(--bg-tertiary);
-            color: var(--text-muted);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 13px;
-            line-height: 1.6;
+            width: 50px;
             padding: 12px 8px;
+            color: var(--line-number);
+            font-family: var(--font-code);
+            font-size: 14px;
+            line-height: 1.5;
             text-align: right;
-            overflow: hidden;
             user-select: none;
-            border-right: 1px solid var(--border-color);
+            background: var(--bg-primary);
         }
 
-        .code-input {
+        .code-editor {
             flex: 1;
             background: transparent;
             border: none;
-            color: #4ade80;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 13px;
-            line-height: 1.6;
+            color: #d4d4d4;
+            font-family: var(--font-code);
+            font-size: 14px;
+            line-height: 1.5;
             padding: 12px;
             resize: none;
             outline: none;
+            caret-color: var(--cursor);
+            white-space: pre;
             overflow: auto;
-            caret-color: var(--accent);
         }
 
-        .preview {
+        .preview-frame {
             flex: 1;
-            background: #fff;
             border: none;
+            background: #fff;
         }
 
         /* Status Bar */
-        .status {
-            height: 28px;
-            background: var(--bg-tertiary);
-            border-top: 1px solid var(--border-color);
+        .statusbar {
+            height: 24px;
+            background: var(--accent);
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 0 12px;
-            font-size: 11px;
-            color: var(--text-muted);
+            font-size: 12px;
         }
 
         .status-left, .status-right {
@@ -262,173 +289,418 @@
             gap: 16px;
         }
 
-        /* Toast */
-        #toast {
-            position: fixed;
-            bottom: 60px;
-            left: 50%;
-            transform: translateX(-50%) translateY(20px);
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-color);
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-size: 13px;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s;
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 10px; height: 10px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #424242; border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: #4f4f4f; }
+
+        /* Modal */
+        .modal {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
             z-index: 1000;
         }
-
-        #toast.visible {
-            opacity: 1;
-            visibility: visible;
-            transform: translateX(-50%) translateY(0);
+        .modal.visible { display: flex; }
+        .modal-content {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            min-width: 300px;
         }
-
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #52525b; }
+        .modal-title { font-size: 14px; margin-bottom: 16px; }
+        .modal-input {
+            width: 100%;
+            padding: 8px 12px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+        .modal-btns { display: flex; gap: 8px; justify-content: flex-end; }
+        .modal-btn {
+            padding: 6px 16px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .modal-btn.primary { background: var(--accent); color: #fff; }
+        .modal-btn.secondary { background: var(--bg-tertiary); color: var(--text-primary); }
 
         /* Responsive */
         @media (max-width: 768px) {
-            .workspace { flex-direction: column; }
-            .panel:first-child { height: 50%; }
+            .sidebar { display: none; }
+            .activitybar { display: none; }
+            .split { flex-direction: column; }
+            .preview-panel { border-left: none; border-top: 1px solid var(--border-color); }
         }
     </style>
 </head>
 <body>
-    <!-- Splash -->
-    <div id="splash">
-        <div class="logo">X</div>
-        <div class="title">WEBCODE <span style="color:var(--accent)">PRO</span></div>
-        <div class="subtitle">KOD MUHARRIRI</div>
-        <button class="start-btn" onclick="startApp()">IShlga tushirish</button>
-    </div>
-
-    <!-- Main App -->
-    <div id="app">
-        <header class="header">
-            <div class="header-left">
+    <div class="app">
+        <!-- Title Bar -->
+        <div class="titlebar">
+            <div class="titlebar-left">
                 <div class="dots">
                     <button class="dot red" onclick="clearCode()" title="Tozalash"></button>
-                    <button class="dot yellow" onclick="copyCode()" title="Nusxalash"></button>
-                    <button class="dot green" onclick="fullscreen()" title="To'liq ekran"></button>
+                    <button class="dot yellow" onclick="saveProject()" title="Saqlash"></button>
+                    <button class="dot green" onclick="toggleFullscreen()" title="To'liq ekran"></button>
                 </div>
-                <div class="brand">WEB<span>CODE</span></div>
+                <span class="title">XOLERI𝞗 WebCode Pro</span>
             </div>
-            <button style="background:transparent;border:none;color:var(--text-muted);cursor:pointer;font-size:18px"
-                onclick="toggleMenu()">☰</button>
-        </header>
+            <div class="titlebar-right">
+                <button class="titlebar-btn" onclick="minimize()">─</button>
+                <button class="titlebar-btn" onclick="maximize()">□</button>
+                <button class="titlebar-btn" onclick="closeApp()">×</button>
+            </div>
+        </div>
 
-        <div class="workspace">
-            <!-- Editor Panel -->
-            <div class="panel">
-                <div class="panel-header">
-                    <span class="panel-title">KOD</span>
-                </div>
-                <div class="editor-area">
-                    <div class="line-numbers" id="lines">1</div>
-                    <textarea class="code-input" id="code" spellcheck="false" 
-                        placeholder="<html>&#10;  <body>&#10;    <h1>Salom!</h1>&#10;  </body>&#10;</html>"
-                        oninput="update()" onscroll="syncScroll()"></textarea>
-                </div>
+        <!-- Menu Bar -->
+        <div class="menubar">
+            <div class="menu-item" onclick="newFile()">File</div>
+            <div class="menu-item" onclick="newFile()">View</div>
+            <div class="menu-item" onclick="showHelp()">Help</div>
+            <input type="text" class="search-box" placeholder="🔍 Search...">
+        </div>
+
+        <!-- Main Content -->
+        <div class="main">
+            <!-- Activity Bar -->
+            <div class="activitybar">
+                <div class="activity-icon active" title="Explorer">📁</div>
+                <div class="activity-icon" title="Search">🔍</div>
+                <div class="activity-icon" title="Git">🔀</div>
+                <div class="activity-icon" title="Extensions">📦</div>
             </div>
 
-            <!-- Preview Panel -->
-            <div class="panel">
-                <div class="panel-header">
-                    <span class="panel-title">NATIJA</span>
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <span>EXPLORER</span>
+                    <span onclick="newFile()" style="float:right;cursor:pointer">+</span>
                 </div>
-                <iframe class="preview" id="preview" sandbox="allow-scripts"></iframe>
+                <div class="file-list" id="fileList"></div>
+            </div>
+
+            <!-- Editor Area -->
+            <div class="editor-area">
+                <div class="tabs" id="tabs"></div>
+                
+                <div class="split">
+                    <div class="editor-panel">
+                        <div class="panel-header">INDEX.HTML</div>
+                        <div class="editor-content">
+                            <div class="line-numbers" id="lineNumbers">1</div>
+                            <textarea class="code-editor" id="codeEditor" spellcheck="false"
+                                placeholder="<!-- Kodni bu yerga yozing -->&#10;<html>&#10;  <head>&#10;    <title>Salom</title>&#10;  </head>&#10;  <body>&#10;    <h1>Salom, WebCode Pro!</h1>&#10;  </body>&#10;</html>"
+                                oninput="handleInput()" onscroll="syncScroll()"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="preview-panel">
+                        <div class="panel-header">NATIJA</div>
+                        <iframe class="preview-frame" id="previewFrame" sandbox="allow-scripts"></iframe>
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- Status Bar -->
-        <div class="status">
+        <div class="statusbar">
             <div class="status-left">
-                <span id="status-text">Tayyor</span>
+                <span>main*</span>
+                <span id="errors">0 errors</span>
             </div>
             <div class="status-right">
-                <span id="size">0 KB</span>
+                <span>Ln 1, Col 1</span>
                 <span>UTF-8</span>
+                <span>HTML</span>
             </div>
         </div>
     </div>
 
-    <!-- Toast -->
-    <div id="toast"></div>
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <div class="modal-title" id="modalTitle">Yangi fayl</div>
+            <input type="text" class="modal-input" id="modalInput" placeholder="fayl nomi">
+            <div class="modal-btns">
+                <button class="modal-btn secondary" onclick="closeModal()">Bekor</button>
+                <button class="modal-btn primary" onclick="confirmModal()">Yaratish</button>
+            </div>
+        </div>
+    </div>
 
     <script>
-        const splash = document.getElementById('splash');
-        const app = document.getElementById('app');
-        const code = document.getElementById('code');
-        const lines = document.getElementById('lines');
-        const preview = document.getElementById('preview');
-        const size = document.getElementById('size');
-        const statusText = document.getElementById('status-text');
-        const toast = document.getElementById('toast');
+        // Project Data
+        let files = {
+            'index.html': `<!-- Kodni bu yerga yozing -->
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>WebCode Pro</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: #0a0a0a;
+            color: #fff;
+        }
+        h1 {
+            color: #d946ef;
+            text-shadow: 0 0 20px rgba(217,70,239,0.5);
+        }
+    </style>
+</head>
+<body>
+    <h1>💜 WebCode Pro</h1>
+</body>
+</html>`,
+            'style.css': `/* Styles */
+:root {
+    --primary: #d946ef;
+}`,
+            'script.js': `// JavaScript
+console.log('Salom WebCode Pro!');`
+        };
 
-        let timer;
+        let tabs = ['index.html'];
+        let activeTab = 'index.html';
 
-        function startApp() {
-            splash.classList.add('hidden');
-            app.classList.add('visible');
-            update();
-            fullscreen();
-            showToast('Muharrir tayyor!');
+        // Elements
+        const fileList = document.getElementById('fileList');
+        const tabsContainer = document.getElementById('tabs');
+        const codeEditor = document.getElementById('codeEditor');
+        const lineNumbers = document.getElementById('lineNumbers');
+        const previewFrame = document.getElementById('previewFrame');
+        const lineNumbersPanel = document.querySelector('.panel-header');
+
+        let timer, cursorTimer;
+
+        // Initialize
+        function init() {
+            renderFiles();
+            renderTabs();
+            updateEditor();
+            requestFullscreen();
         }
 
-        function update() {
-            // Line numbers
-            const count = code.value.split('\n').length;
-            lines.textContent = Array.from({length: count}, (_, i) => i + 1).join('\n');
+        function renderFiles() {
+            fileList.innerHTML = Object.keys(files).map(name => `
+                <div class="file-item ${name === activeTab ? 'active' : ''}" onclick="openFile('${name}')">
+                    <span class="file-icon">${getIcon(name)}</span>
+                    <span>${name}</span>
+                </div>
+            `).join('');
+        }
 
-            // Preview
+        function renderTabs() {
+            tabsContainer.innerHTML = tabs.map(name => `
+                <div class="tab ${name === activeTab ? 'active' : ''}" onclick="openFile('${name}')">
+                    <span>${getIcon(name)}</span>
+                    <span>${name}</span>
+                    <span class="tab-close" onclick="closeTab('${name}', event)">×</span>
+                </div>
+            `).join('');
+        }
+
+        function getIcon(name) {
+            if (name.endsWith('.html')) return '📄';
+            if (name.endsWith('.css')) return '🎨';
+            if (name.endsWith('.js')) return '⚡';
+            return '📄';
+        }
+
+        function openFile(name) {
+            activeTab = name;
+            renderFiles();
+            renderTabs();
+            updateEditor();
+        }
+
+        function closeTab(name, event) {
+            event.stopPropagation();
+            tabs = tabs.filter(t => t !== name);
+            if (tabs.length === 0) {
+                tabs = ['index.html'];
+            }
+            if (activeTab === name) {
+                activeTab = tabs[0];
+            }
+            renderTabs();
+            renderFiles();
+            updateEditor();
+        }
+
+        function updateEditor() {
+            codeEditor.value = files[activeTab] || '';
+            lineNumbersPanel.textContent = activeTab.toUpperCase();
+            updateLineNumbers();
+            updatePreview();
+            updateCursor();
+        }
+
+        function updateLineNumbers() {
+            const lines = codeEditor.value.split('\n').length;
+            lineNumbers.textContent = Array.from({length: lines}, (_, i) => i + 1).join('\n');
+        }
+
+        function handleInput() {
+            files[activeTab] = codeEditor.value;
+            updateLineNumbers();
             clearTimeout(timer);
-            timer = setTimeout(() => {
-                preview.srcdoc = code.value;
-            }, 500);
-
-            // Size
-            const bytes = new Blob([code.value]).size;
-            size.textContent = (bytes / 1024).toFixed(1) + ' KB';
+            timer = setTimeout(updatePreview, 500);
+            updateCursor();
         }
 
         function syncScroll() {
-            lines.scrollTop = code.scrollTop;
+            lineNumbers.scrollTop = codeEditor.scrollTop;
         }
 
+        function updatePreview() {
+            let html = files['index.html'] || '';
+            
+            // Inject CSS if exists
+            if (files['style.css']) {
+                html = html.replace('</head>', `<style>${files['style.css']}</style></head>`);
+            }
+            
+            // Inject JS if exists  
+            if (files['script.js']) {
+                html = html.replace('</body>', `<script>${files['script.js']}<\/script></body>`);
+            }
+            
+            previewFrame.srcdoc = html;
+        }
+
+        function updateCursor() {
+            const text = codeEditor.value.substring(0, codeEditor.selectionStart);
+            const lines = text.split('\n');
+            const line = lines.length;
+            const col = lines[lines.length - 1].length + 1;
+            document.querySelector('.status-right').innerHTML = `
+                <span>Ln ${line}, Col ${col}</span>
+                <span>UTF-8</span>
+                <span>${activeTab.split('.')[1].toUpperCase()}</span>
+            `;
+        }
+
+        // File Operations
+        function newFile() {
+            document.getElementById('modalTitle').textContent = 'Yangi fayl yaratish';
+            document.getElementById('modalInput').value = '';
+            document.getElementById('modal').classList.add('visible');
+            document.getElementById('modalInput').focus();
+        }
+
+        function confirmModal() {
+            const name = document.getElementById('modalInput').value.trim();
+            if (name) {
+                files[name] = '';
+                if (!tabs.includes(name)) {
+                    tabs.push(name);
+                }
+                activeTab = name;
+                renderFiles();
+                renderTabs();
+                updateEditor();
+            }
+            closeModal();
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('visible');
+        }
+
+        // Window Controls
         function clearCode() {
-            code.value = '';
-            update();
-            showToast('Kod tozalandi');
+            codeEditor.value = '';
+            files[activeTab] = '';
+            updateLineNumbers();
+            updatePreview();
         }
 
-        function copyCode() {
-            code.select();
-            document.execCommand('copy');
-            showToast('Kod nusxalandi');
+        function saveProject() {
+            localStorage.setItem('webcode-pro', JSON.stringify(files));
+            alert('Saqlandi!');
         }
 
-        function fullscreen() {
-            const el = document.documentElement;
-            if (el.requestFullscreen) el.requestFullscreen().catch(()=>{});
-            else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
         }
 
-        function showToast(msg) {
-            toast.textContent = msg;
-            toast.classList.add('visible');
-            setTimeout(() => toast.classList.remove('visible'), 2000);
+        function requestFullscreen() {
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen().catch(()=>{});
+            }
         }
+
+        function minimize() {
+            document.documentElement.requestFullscreen || document.webkitExitFullscreen;
+        }
+
+        function maximize() {
+            toggleFullscreen();
+        }
+
+        function closeApp() {
+            if (confirm('Chiqishni xohlaysizmi?')) {
+                window.close();
+            }
+        }
+
+        function showHelp() {
+            alert('XOLERI𝞗 WebCode Pro\n\nCtrl+S - Saqlash\nCtrl+N - Yangi fayl\nF11 - To\'liq ekran');
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 's') {
+                e.preventDefault();
+                saveProject();
+            }
+            if (e.ctrlKey && e.key === 'n') {
+                e.preventDefault();
+                newFile();
+            }
+            if (e.key === 'F11') {
+                e.preventDefault();
+                toggleFullscreen();
+            }
+        });
 
         // Prevent back
         history.pushState(null, null, location.href);
         window.onpopstate = () => {
             history.pushState(null, null, location.href);
+            requestFullscreen();
         };
+
+        // Load saved
+        const saved = localStorage.getItem('webcode-pro');
+        if (saved) {
+            files = JSON.parse(saved);
+            tabs = Object.keys(files);
+            activeTab = tabs[0] || 'index.html';
+        }
+
+        // Start
+        init();
     </script>
 </body>
 </html>
