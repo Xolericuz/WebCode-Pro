@@ -3,108 +3,197 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Builder - Instant Website Generator</title>
+    <title>AI Builder Pro</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="app">
-        <!-- Header -->
-        <header class="header">
-            <div class="logo">
-                <span class="logo-icon">💜</span>
-                <span class="logo-text">AI Builder</span>
-            </div>
-            <div class="header-actions">
-                <button class="header-btn" onclick="openGitHub()">GitHub</button>
-                <button class="header-btn" onclick="toggleSettings()">⚙️</button>
-            </div>
-        </header>
-
-        <!-- Hero -->
-        <section class="hero" id="hero">
-            <div class="hero-content">
-                <div class="hero-badge">⚡ AI-Powered</div>
-                <h1 class="hero-title">Build websites with <span class="gradient-text">AI</span></h1>
-                <p class="hero-subtitle">Describe your idea, get instant code</p>
-            </div>
-            <div class="prompt-box">
-                <div class="prompt-input-wrapper">
-                    <span class="prompt-icon">💬</span>
-                    <textarea class="prompt-input" id="promptInput" placeholder="Describe your website...&#10;Example: A modern landing page for a tech startup with dark theme, gradient buttons, and animated hero section"></textarea>
-                    <button class="prompt-action" onclick="generateCode()">
-                        <span class="btn-text">Generate</span>
-                        <span class="btn-icon">✨</span>
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Loading State -->
-        <div class="loading" id="loading">
-            <div class="loading-spinner"></div>
-            <div class="loading-text">AI is thinking...</div>
-            <div class="loading-dots">
-                <span></span><span></span><span></span>
+        <!-- Animated Background -->
+        <div class="bg-animation">
+            <div class="bg-gradient"></div>
+            <div class="bg-grid"></div>
+            <div class="floating-shapes">
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="shape shape-3"></div>
             </div>
         </div>
 
-        <!-- Result -->
-        <section class="result" id="result">
-            <div class="split-view">
-                <!-- Preview Panel -->
-                <div class="panel preview-panel">
-                    <div class="panel-header">
-                        <span>PREVIEW</span>
-                        <button class="panel-btn" onclick="refreshPreview()">↻</button>
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span class="logo-icon">⚡</span>
+                    <span class="logo-text">AI Builder</span>
+                </div>
+            </div>
+            
+            <div class="sidebar-menu">
+                <div class="menu-item active">
+                    <span>🎯</span>
+                    <span>Generate</span>
+                </div>
+                <div class="menu-item">
+                    <span>📁</span>
+                    <span>Projects</span>
+                </div>
+                <div class="menu-item">
+                    <span>🤖</span>
+                    <span>AI Chat</span>
+                </div>
+                <div class="menu-item">
+                    <span>⚙️</span>
+                    <span>Settings</span>
+                </div>
+            </div>
+            
+            <div class="sidebar-footer">
+                <span class="version">v2.0</span>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+                    <h1>Create Website</h1>
+                </div>
+                <div class="header-right">
+                    <button class="header-btn" onclick="showTemplates()">📋 Templates</button>
+                    <button class="header-btn primary" onclick="deploy()">🚀 Deploy</button>
+                </div>
+            </header>
+
+            <!-- Hero Section -->
+            <section class="hero">
+                <div class="hero-badge">
+                    <span class="pulse"></span>
+                    AI-Powered Website Generator
+                </div>
+                <h2 class="hero-title">
+                    Build stunning websites<br>
+                    <span class="gradient">in seconds</span>
+                </h2>
+                <p class="hero-subtitle">Describe your vision, let AI do the magic</p>
+
+                <!-- Input Box -->
+                <div class="input-box">
+                    <div class="input-icon">💭</div>
+                    <textarea 
+                        class="prompt-input" 
+                        id="promptInput"
+                        placeholder="Describe your website...&#10;Example: A modern SaaS landing page with dark theme, gradient buttons, animated hero, and glowing effects"
+                        rows="3"
+                    ></textarea>
+                    <div class="input-actions">
+                        <div class="input-options">
+                            <button class="option-btn" onclick="addOption('dark')" title="Dark theme">🌙</button>
+                            <button class="option-btn" onclick="addOption('animated')" title="Animated">✨</button>
+                            <button class="option-btn" onclick="addOption('modern')" title="Modern">🎨</button>
+                            <button class="option-btn" onclick="addOption('responsive')" title="Responsive">📱</button>
+                        </div>
+                        <button class="generate-btn" onclick="generateCode()">
+                            <span>Generate</span>
+                            <span class="arrow">→</span>
+                        </button>
                     </div>
-                    <iframe id="preview" sandbox="allow-scripts"></iframe>
+                </div>
+            </section>
+
+            <!-- Loading -->
+            <div class="loading" id="loading">
+                <div class="loading-content">
+                    <div class="loading-orb">
+                        <div class="orb"></div>
+                        <div class="orb-ring"></div>
+                    </div>
+                    <div class="loading-text">AI is crafting your website...</div>
+                    <div class="loading-steps">
+                        <div class="step">Analyzing prompt</div>
+                        <div class="step">Generating code</div>
+                        <div class="step">Applying styles</div>
+                        <div class="step">Finalizing</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Result -->
+            <section class="result" id="result">
+                <!-- Tabs -->
+                <div class="result-tabs">
+                    <button class="tab active" data-tab="preview" onclick="switchTab('preview')">
+                        <span>👁️</span> Preview
+                    </button>
+                    <button class="tab" data-tab="code" onclick="switchTab('code')">
+                        <span>📄</span> Code
+                    </button>
+                    <button class="tab" data-tab="ai" onclick="switchTab('ai')">
+                        <span>🤖</span> AI Chat
+                    </button>
                 </div>
 
-                <!-- Code Panel -->
-                <div class="panel code-panel">
-                    <div class="panel-header">
-                        <span>CODE</span>
-                        <div class="panel-actions">
-                            <button onclick="copyCode()">📋 Copy</button>
+                <!-- Tab Content -->
+                <div class="tab-content">
+                    <!-- Preview -->
+                    <div class="tab-panel active" id="preview-panel">
+                        <iframe id="preview" sandbox="allow-scripts"></iframe>
+                    </div>
+
+                    <!-- Code -->
+                    <div class="tab-panel" id="code-panel">
+                        <div class="code-header">
+                            <div class="code-filename">index.html</div>
+                            <div class="code-actions">
+                                <button onclick="copyCode()">📋 Copy</button>
+                                <button onclick="downloadCode()">💾 Download</button>
+                            </div>
+                        </div>
+                        <pre class="code-view" id="codeView"></pre>
+                    </div>
+
+                    <!-- AI Chat -->
+                    <div class="tab-panel" id="ai-panel">
+                        <div class="chat-messages" id="chatMessages">
+                            <div class="message bot">
+                                <span>🤖</span>
+                                <p>Hi! I can help you modify your website. Try commands like:</p>
+                                <ul>
+                                    <li>"Make the background darker"</li>
+                                    <li>"Add a contact form"</li>
+                                    <li>"Change to blue theme"</li>
+                                    <li>"Add smooth animations"</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="chat-input-wrapper">
+                            <input type="text" id="chatInput" placeholder="Tell AI what to change...">
+                            <button onclick="sendChat()">➤</button>
                         </div>
                     </div>
-                    <div class="code-editor" id="codeEditor"></div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- AI Chat -->
-        <section class="ai-chat" id="aiChat">
-            <div class="chat-header">🤖 Ask AI to modify</div>
-            <div class="chat-input-wrapper">
-                <input type="text" class="chat-input" id="chatInput" placeholder="Make it darker / Add animation / Change to blue theme...">
-                <button class="chat-send" onclick="sendChat()">➤</button>
-            </div>
-        </section>
-
-        <!-- Actions -->
-        <section class="actions" id="actions">
-            <button class="action-btn" onclick="downloadZip()">
-                <span class="action-icon">📥</span>
-                <span>Download</span>
-            </button>
-            <button class="action-btn" onclick="copyCode()">
-                <span class="action-icon">📋</span>
-                <span>Copy</span>
-            </button>
-            <button class="action-btn primary" onclick="deployToGitHub()">
-                <span class="action-icon">🚀</span>
-                <span>Deploy</span>
-            </button>
-        </section>
-
-        <!-- Footer -->
-        <footer class="footer">
-            <p>Powered by AI • Built with 💜</p>
-        </footer>
+            <!-- Actions -->
+            <section class="actions" id="actions">
+                <button class="action-btn" onclick="downloadCode()">
+                    <span>📥</span> Download HTML
+                </button>
+                <button class="action-btn" onclick="copyCode()">
+                    <span>📋</span> Copy Code
+                </button>
+                <button class="action-btn" onclick="newProject()">
+                    <span>➕</span> New Project
+                </button>
+                <button class="action-btn primary" onclick="deploy()">
+                    <span>🚀</span> Deploy
+                </button>
+            </section>
+        </main>
     </div>
 
     <!-- Toast -->
