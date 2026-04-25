@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src 'self' https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline'">
-    <title>Visual Studio Code</title>
+    <title>VS Code Pro</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="app">
+        <!-- Title Bar -->
         <div class="titlebar">
             <div class="titlebar-left">
                 <div class="window-controls">
-                    <button class="window-btn red" onclick="clearEditor()"></button>
-                    <button class="window-btn yellow" onclick="saveAll()"></button>
-                    <button class="window-btn green" onclick="toggleFullscreen()"></button>
+                    <button class="window-btn red" onclick="clearEditor()" title="Clear"></button>
+                    <button class="window-btn yellow" onclick="saveProject()" title="Save"></button>
+                    <button class="window-btn green" onclick="toggleFullscreen()" title="Fullscreen"></button>
                 </div>
-                <span class="title">Visual Studio Code</span>
+                <span class="title">VS Code Pro</span>
             </div>
             <div class="titlebar-right">
                 <button class="titlebar-btn" onclick="minimize()">&#8211;</button>
@@ -27,8 +27,10 @@
                 <button class="titlebar-btn" onclick="closeApp()">&#10005;</button>
             </div>
         </div>
+
+        <!-- Menu Bar -->
         <div class="menubar">
-            <div class="menu-item" onclick="createNewFile()">File</div>
+            <div class="menu-item" onclick="newFile()">File</div>
             <div class="menu-item">Edit</div>
             <div class="menu-item">Selection</div>
             <div class="menu-item">View</div>
@@ -36,59 +38,82 @@
             <div class="menu-item">Run</div>
             <div class="menu-item">Terminal</div>
             <div class="menu-item">Help</div>
-            <div class="search-container">
-                <span class="search-icon">🔍</span>
-                <input type="text" class="search" placeholder="Search (Ctrl+Shift+F)">
+            <div class="search-box">
+                <span>🔍</span>
+                <input type="text" placeholder="Search (Ctrl+Shift+F)">
             </div>
         </div>
+
+        <!-- Main -->
         <div class="main">
+            <!-- Activity Bar -->
             <div class="activitybar">
-                <div class="activity-item active" title="Explorer (Ctrl+Shift+E)">📁</div>
-                <div class="activity-item" title="Search (Ctrl+Shift+F)">🔍</div>
-                <div class="activity-item" title="Source Control (Ctrl+Shift+G)">🔀</div>
-                <div class="activity-item" title="Run and Debug (F5)">🐞</div>
-                <div class="activity-item" title="Extensions (Ctrl+Shift+X)">📦</div>
+                <div class="activity-item active" title="Explorer">📁</div>
+                <div class="activity-item" title="Search">🔍</div>
+                <div class="activity-item" title="Git">🔀</div>
+                <div class="activity-item" title="Debug">🐞</div>
+                <div class="activity-item" title="Extensions">📦</div>
             </div>
+
+            <!-- Sidebar -->
             <div class="sidebar" id="sidebar">
-                <div class="sidebar-header">Explorer</div>
-                <div class="section-header" onclick="toggleSection()">
-                    <span class="section-arrow">▼</span>
-                    VSCODE-PROJECT
+                <div class="sidebar-header">
+                    <span>EXPLORER</span>
+                    <span class="sidebar-btn" onclick="newFile()">+</span>
                 </div>
-                <div class="file-tree" id="fileTree"></div>
+                <div class="project-section">
+                    <div class="section-title" onclick="toggleSection()">
+                        <span class="arrow">▼</span>
+                        VSCODE-PROJECT
+                    </div>
+                    <div class="file-list" id="fileList"></div>
+                </div>
             </div>
+
+            <!-- Editor Area -->
             <div class="editor-area">
+                <!-- Tabs -->
                 <div class="tabs" id="tabs"></div>
+
+                <!-- Welcome -->
                 <div class="welcome" id="welcome">
-                    <div class="welcome-title">💜</div>
-                    <div class="welcome-subtitle">Visual Studio Code</div>
-                    <button class="welcome-btn" onclick="createNewFile()">New File</button>
+                    <div class="welcome-logo">💜</div>
+                    <div class="welcome-title">VS Code Pro</div>
+                    <div class="welcome-subtitle">Web-based Code Editor</div>
+                    <button class="welcome-btn" onclick="newFile()">New File</button>
                 </div>
+
+                <!-- Editor Split -->
                 <div class="editor-split" id="editorSplit" style="display:none;">
                     <div class="editor-panel">
                         <div class="panel-header">
-                            <span class="panel-title-group" id="panelTitle">MAIN</span>
-                            <div>
-                                <button class="panel-btn" title="Format Document">⚡</button>
-                                <button class="panel-btn" title="Word Wrap">📝</button>
+                            <span id="panelTitle">index.html</span>
+                            <div class="panel-actions">
+                                <button onclick="formatDoc()">⚡</button>
+                                <button>📝</button>
                             </div>
                         </div>
-                        <div class="editor-content">
-                            <div class="gutter" id="lineNumbers">1</div>
-                            <textarea class="code-area" id="codeEditor" spellcheck="false" oninput="onInput()" onscroll="syncScroll()" onclick="updateCursor()"></textarea>
+                        <div class="editor-wrapper">
+                            <div class="line-numbers" id="lineNumbers">1</div>
+                            <div class="code-editor" id="codeEditor" contenteditable="true" spellcheck="false"
+                                oninput="onInput()" onscroll="syncScroll()" onclick="updateCursor()"></div>
                         </div>
                     </div>
                     <div class="preview-panel">
                         <div class="panel-header">
                             <span>PREVIEW</span>
-                            <button class="panel-btn" title="Refresh">↻</button>
-                            <button class="panel-btn" title="Open in Browser">↗</button>
+                            <div class="panel-actions">
+                                <button onclick="refreshPreview()">↻</button>
+                                <button onclick="openInNew()">↗</button>
+                            </div>
                         </div>
-                        <iframe class="preview-frame" id="previewFrame" sandbox="allow-scripts allow-modals"></iframe>
+                        <iframe id="preview" sandbox="allow-scripts allow-modals"></iframe>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Status Bar -->
         <div class="statusbar">
             <div class="status-left">
                 <div class="status-item" onclick="toggleSidebar()">
@@ -96,21 +121,18 @@
                     <span>main*</span>
                 </div>
                 <div class="status-item">
-                    <span>❌</span>
-                    <span id="errors">0 errors, 0 warnings</span>
+                    <span id="errors">✓ 0 errors</span>
                 </div>
             </div>
             <div class="status-right">
                 <div class="status-item" id="cursorPos">Ln 1, Col 1</div>
                 <div class="status-item">UTF-8</div>
                 <div class="status-item" id="fileType">HTML</div>
-                <div class="status-item">LF</div>
+                <div class="status-item">Spaces: 2</div>
             </div>
         </div>
     </div>
+
     <script src="script.js"></script>
-    init();
-        codeEditor.focus();
-    </script>
 </body>
 </html>
