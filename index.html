@@ -8,418 +8,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-1: #1e1e1e;
-            --bg-2: #252526;
-            --bg-3: #2d2d2d;
-            --bg-4: #333333;
-            --bg-5: #3c3c3c;
-            --fg-1: #cccccc;
-            --fg-2: #969696;
-            --fg-3: #858585;
-            --fg-4: #6e6e6e;
-            --accent: #0e639c;
-            --accent-hover: #1177bb;
-            --orange: #ce9178;
-            --yellow: #dcdcaa;
-            --green: #6a9955;
-            --blue: #569cd6;
-            --cyan: #4ec9b0;
-            --pink: #c586c0;
-            --red: #f44747;
-            --border: #454545;
-            --tab-active: #1e1e1e;
-            --tab-inactive: #2d2d2d;
-            --line-num: #858585;
-            --selection: #264f78;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        html, body {
-            width: 100%; height: 100%;
-            background: var(--bg-1);
-            color: var(--fg-1);
-            font-family: 'Segoe UI', -apple-system,BlinkMacSystemFont, sans-serif;
-            font-size: 13px;
-            overflow: hidden;
-            user-select: none;
-        }
-
-        * { scrollbar-width: thin; scrollbar-color: var(--bg-5) transparent; }
-        ::-webkit-scrollbar { width: 10px; height: 10px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--bg-5); border-radius: 5px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--fg-4); }
-
-        .app { display: flex; flex-direction: column; height: 100vh; width: 100%; }
-
-        /* Title Bar */
-        .titlebar {
-            height: 30px;
-            background: var(--bg-3);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 8px;
-            -webkit-app-region: drag;
-            font-size: 12px;
-        }
-
-        .titlebar-left { display: flex; align-items: center; gap: 8px; -webkit-app-region: no-drag; }
-        
-        .window-controls { display: flex; gap: 8px; }
-        .window-btn { 
-            width: 12px; height: 12px; border-radius: 50%; border: none; cursor: pointer; 
-            display: flex; align-items: center; justify-content: center;
-        }
-        .red { background: #ff5f57; }
-        .yellow { background: #febc2e; }
-        .green { background: #28ca41; }
-
-        .title { 
-            margin-left: 12px; font-size: 13px; 
-            background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💜</text></svg>") no-repeat left center;
-            padding-left: 24px;
-        }
-
-        .titlebar-right { display: flex; -webkit-app-region: no-drag; position: relative; z-index: 100; }
-        .titlebar-btn {
-            width: 46px; height: 30px;
-            background: transparent; border: none;
-            color: var(--fg-2);
-            cursor: pointer;
-            font-size: 11px;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .titlebar-btn:hover { background: rgba(255,255,255,0.1); color: var(--fg-1); }
-
-        /* Menu Bar */
-        .menubar {
-            height: 35px;
-            background: var(--bg-2);
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            padding: 0 8px;
-        }
-
-        .menu-item {
-            padding: 6px 12px;
-            color: var(--fg-1);
-            cursor: pointer;
-            font-size: 13px;
-            border-radius: 4px;
-        }
-        .menu-item:hover { background: rgba(255,255,255,0.1); }
-
-        .search-container {
-            margin-left: auto;
-            position: relative;
-        }
-        .search {
-            background: var(--bg-1);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 4px 8px 4px 28px;
-            color: var(--fg-1);
-            font-size: 12px;
-            width: 180px;
-            outline: none;
-        }
-        .search:focus { border-color: var(--accent); }
-        .search-icon {
-            position: absolute; left: 8px; top: 50%;
-            transform: translateY(-50%);
-            color: var(--fg-3);
-            font-size: 11px;
-        }
-
-        /* Main */
-        .main { flex: 1; display: flex; overflow: hidden; }
-
-        /* Activity Bar */
-        .activitybar {
-            width: 50px;
-            background: var(--bg-3);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-top: 8px;
-            gap: 4px;
-        }
-
-        .activity-item {
-            width: 40px; height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--fg-3);
-            cursor: pointer;
-            border-radius: 6px;
-            font-size: 24px;
-            position: relative;
-        }
-        .activity-item:hover { color: var(--fg-1); }
-        .activity-item.active { color: var(--fg-1); border-left: 2px solid var(--fg-1); background: rgba(255,255,255,0.05); }
-        .activity-item .shortcut {
-            position: absolute; right: 4px; bottom: 4px;
-            font-size: 8px; color: var(--fg-3);
-        }
-
-        /* Sidebar */
-        .sidebar {
-            width: 240px;
-            min-width: 180px;
-            background: var(--bg-2);
-            border-right: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-        .sidebar.collapsed { width: 0; border: none; }
-
-        .sidebar-header {
-            height: 35px;
-            padding: 0 12px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            color: var(--fg-2);
-            text-transform: uppercase;
-        }
-
-        .section-header {
-            padding: 8px 12px;
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            color: var(--fg-2);
-            text-transform: uppercase;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-        }
-        .section-header:hover { background: rgba(255,255,255,0.05); }
-
-        .section-arrow {
-            margin-right: 4px;
-            transition: transform 0.15s;
-            font-size: 10px;
-        }
-        .section-header.collapsed .section-arrow { transform: rotate(-90deg); }
-
-        .file-tree { padding: 4px 0; }
-
-        .file-item {
-            height: 22px;
-            padding: 0 12px 0 24px;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            font-size: 13px;
-            color: var(--fg-1);
-        }
-        .file-item:hover { background: rgba(255,255,255,0.05); }
-        .file-item.active { background: var(--selection); }
-        .file-item::before {
-            content: '📄';
-            font-size: 12px;
-            margin-right: 6px;
-            opacity: 0.7;
-        }
-        .file-item.html::before { content: '📄'; }
-        .file-item.css::before { content: '🎨'; }
-        .file-item.js::before { content: '⚡'; }
-
-        /* Editor Area */
-        .editor-area { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-
-        /* Tabs */
-        .tabs {
-            display: flex;
-            background: var(--bg-3);
-            overflow-x: auto;
-            min-height: 35px;
-        }
-        .tabs::-webkit-scrollbar { height: 3px; }
-
-        .tab {
-            display: flex;
-            align-items: center;
-            padding: 8px 12px;
-            background: var(--tab-inactive);
-            border-right: 1px solid var(--border-color);
-            cursor: pointer;
-            min-width: 120px;
-            max-width: 200px;
-            color: var(--fg-2);
-            font-size: 13px;
-        }
-        .tab.active {
-            background: var(--tab-active);
-            color: var(--fg-1);
-        }
-        .tab .icon { margin-right: 6px; font-size: 14px; }
-        .tab .name {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            flex: 1;
-        }
-        .tab .close {
-            margin-left: 8px;
-            width: 20px; height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 4px;
-            font-size: 14px;
-            opacity: 0;
-        }
-        .tab:hover .close, .tab.active .close { opacity: 1; }
-        .tab .close:hover { background: rgba(255,255,255,0.1); }
-
-        /* Editor Split */
-        .editor-split { flex: 1; display: flex; overflow: hidden; }
-
-        .editor-panel, .preview-panel {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .preview-panel { border-left: 1px solid var(--border-color); }
-
-        .panel-header {
-            height: 35px;
-            background: var(--bg-2);
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            padding: 0 12px;
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            color: var(--fg-3);
-            justify-content: space-between;
-        }
-        .panel-title-group { display: flex; gap: 8px; }
-        .panel-btn {
-            background: transparent;
-            border: none;
-            color: var(--fg-3);
-            cursor: pointer;
-            padding: 4px 8px;
-            border-radius: 4px;
-        }
-        .panel-btn:hover { background: rgba(255,255,255,0.1); color: var(--fg-1); }
-
-        .editor-content {
-            flex: 1;
-            display: flex;
-            overflow: hidden;
-            background: var(--bg-1);
-        }
-
-        .gutter {
-            width: 55px;
-            background: var(--bg-1);
-            color: var(--line-num);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 14px;
-            line-height: 1.5;
-            padding: 8px 8px;
-            text-align: right;
-            user-select: none;
-            border-right: 1px solid var(--border-color);
-            overflow: hidden;
-        }
-
-        .code-area {
-            flex: 1;
-            background: transparent;
-            border: none;
-            color: #d4d4d4;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 14px;
-            line-height: 1.5;
-            padding: 8px 12px;
-            resize: none;
-            outline: none;
-            caret-color: #fff;
-            white-space: pre;
-            overflow: auto;
-        }
-
-        .preview-frame {
-            flex: 1;
-            border: none;
-            background: #fff;
-        }
-
-        /* Status Bar */
-        .statusbar {
-            height: 22px;
-            background: var(--accent);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 8px;
-            font-size: 12px;
-            color: #fff;
-        }
-
-        .status-left, .status-right { display: flex; align-items: center; gap: 12px; }
-        .status-item { display: flex; align-items: center; gap: 4px; cursor: pointer; }
-        .status-item:hover { background: rgba(255,255,255,0.2); }
-        .status-icon { font-size: 14px; }
-
-        /* Welcome Screen */
-        .welcome {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: var(--bg-1);
-        }
-        .welcome-title {
-            font-size: 40px;
-            margin-bottom: 20px;
-        }
-        .welcome-subtitle {
-            color: var(--fg-2);
-            margin-bottom: 40px;
-        }
-        .welcome-btn {
-            padding: 12px 24px;
-            background: var(--accent);
-            border: none;
-            border-radius: 4px;
-            color: #fff;
-            font-size: 14px;
-            cursor: pointer;
-        }
-        .welcome-btn:hover { background: var(--accent-hover); }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .sidebar { display: none; }
-            .activitybar { display: none; }
-            .editor-split { flex-direction: column; }
-            .preview-panel { border-left: none; border-top: 1px solid var(--border-color); height: 50%; }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="app">
-        <!-- Title Bar -->
         <div class="titlebar">
             <div class="titlebar-left">
                 <div class="window-controls">
@@ -435,26 +27,21 @@
                 <button class="titlebar-btn" onclick="closeApp()">&#10005;</button>
             </div>
         </div>
-
-        <!-- Menu Bar -->
         <div class="menubar">
-            <div class="menu-item" onclick="newFile()">File</div>
-            <div class="menu-item" onclick="">Edit</div>
-            <div class="menu-item" onclick="">Selection</div>
-            <div class="menu-item" onclick="">View</div>
-            <div class="menu-item" onclick="">Go</div>
-            <div class="menu-item" onclick="">Run</div>
-            <div class="menu-item" onclick="">Terminal</div>
-            <div class="menu-item" onclick="">Help</div>
+            <div class="menu-item" onclick="createNewFile()">File</div>
+            <div class="menu-item">Edit</div>
+            <div class="menu-item">Selection</div>
+            <div class="menu-item">View</div>
+            <div class="menu-item">Go</div>
+            <div class="menu-item">Run</div>
+            <div class="menu-item">Terminal</div>
+            <div class="menu-item">Help</div>
             <div class="search-container">
                 <span class="search-icon">🔍</span>
                 <input type="text" class="search" placeholder="Search (Ctrl+Shift+F)">
             </div>
         </div>
-
-        <!-- Main -->
         <div class="main">
-            <!-- Activity Bar -->
             <div class="activitybar">
                 <div class="activity-item active" title="Explorer (Ctrl+Shift+E)">📁</div>
                 <div class="activity-item" title="Search (Ctrl+Shift+F)">🔍</div>
@@ -462,30 +49,21 @@
                 <div class="activity-item" title="Run and Debug (F5)">🐞</div>
                 <div class="activity-item" title="Extensions (Ctrl+Shift+X)">📦</div>
             </div>
-
-            <!-- Sidebar -->
             <div class="sidebar" id="sidebar">
                 <div class="sidebar-header">Explorer</div>
                 <div class="section-header" onclick="toggleSection()">
                     <span class="section-arrow">▼</span>
-                    WEBCODE-PROJECT
+                    VSCODE-PROJECT
                 </div>
                 <div class="file-tree" id="fileTree"></div>
             </div>
-
-            <!-- Editor -->
             <div class="editor-area">
-                <!-- Tabs -->
                 <div class="tabs" id="tabs"></div>
-
-                <!-- Welcome -->
                 <div class="welcome" id="welcome">
                     <div class="welcome-title">💜</div>
                     <div class="welcome-subtitle">Visual Studio Code</div>
                     <button class="welcome-btn" onclick="createNewFile()">New File</button>
                 </div>
-
-                <!-- Editor Split -->
                 <div class="editor-split" id="editorSplit" style="display:none;">
                     <div class="editor-panel">
                         <div class="panel-header">
@@ -497,8 +75,7 @@
                         </div>
                         <div class="editor-content">
                             <div class="gutter" id="lineNumbers">1</div>
-                            <textarea class="code-area" id="codeEditor" spellcheck="false"
-                                oninput="onInput()" onscroll="syncScroll()" onclick="updateCursor()"></textarea>
+                            <textarea class="code-area" id="codeEditor" spellcheck="false" oninput="onInput()" onscroll="syncScroll()" onclick="updateCursor()"></textarea>
                         </div>
                     </div>
                     <div class="preview-panel">
@@ -512,8 +89,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Status Bar -->
         <div class="statusbar">
             <div class="status-left">
                 <div class="status-item" onclick="toggleSidebar()">
@@ -529,303 +104,12 @@
                 <div class="status-item" id="cursorPos">Ln 1, Col 1</div>
                 <div class="status-item">UTF-8</div>
                 <div class="status-item" id="fileType">HTML</div>
-                <div class="status-item">
-                    <span>📄</span>
-                    <span id="encoding">LF</span>
-                </div>
+                <div class="status-item">LF</div>
             </div>
         </div>
     </div>
-
-    <script>
-        // ===== Data =====
-        let files = {
-            'index.html': `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Website</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div class="container">
-        <h1>💜 Hello VS Code!</h1>
-        <p>Welcome to your new editor.</p>
-        <button onclick="sayHello()">Click Me</button>
-    </div>
-    <script src="script.js"><\/script>
-</body>
-</html>`,
-            'style.css': `/* Main Styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #1a1a2e, #16213e);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #fff;
-}
-
-.container {
-    text-align: center;
-    padding: 40px;
-}
-
-h1 {
-    font-size: 3rem;
-    margin-bottom: 20px;
-    background: linear-gradient(90deg, #d946ef, #8b5cf6);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-p {
-    font-size: 1.2rem;
-    color: #9ca3af;
-    margin-bottom: 20px;
-}
-
-button {
-    padding: 12px 32px;
-    font-size: 1rem;
-    background: #d946ef;
-    border: none;
-    border-radius: 8px;
-    color: #fff;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-button:hover {
-    background: #8b5cf6;
-    transform: translateY(-2px);
-}`,
-            'script.js': `// Main Script
-function sayHello() {
-    alert('Hello from VS Code! 💜');
-}
-
-console.log('VS Code loaded successfully!');`
-        };
-
-        let openTabs = ['index.html'];
-        let activeFile = 'index.html';
-        let updateTimer;
-
-        // ===== Elements =====
-        const fileTree = document.getElementById('fileTree');
-        const tabsContainer = document.getElementById('tabs');
-        const codeEditor = document.getElementById('codeEditor');
-        const lineNumbers = document.getElementById('lineNumbers');
-        const previewFrame = document.getElementById('previewFrame');
-        const editorSplit = document.getElementById('editorSplit');
-        const welcome = document.getElementById('welcome');
-        const panelTitle = document.getElementById('panelTitle');
-
-        // ===== Init =====
-        function init() {
-            renderFileTree();
-            renderTabs();
-            showEditor();
-            requestFullscreen();
-        }
-
-        // ===== File Tree =====
-        function renderFileTree() {
-            fileTree.innerHTML = Object.keys(files).map(name => `
-                <div class="file-item ${name.split('.')[1]}" 
-                     data-file="${name}"
-                     onclick="openFile('${name}')">
-                    ${name}
-                </div>
-            `).join('');
-        }
-
-        // ===== Tabs =====
-        function renderTabs() {
-            tabsContainer.innerHTML = openTabs.map(name => `
-                <div class="tab ${name === activeFile ? 'active' : ''}" 
-                     onclick="openFile('${name}')">
-                    <span class="icon">${getIcon(name)}</span>
-                    <span class="name">${name}</span>
-                    <span class="close" onclick="closeTab('${name}', event)">✕</span>
-                </div>
-            `).join('');
-        }
-
-        function getIcon(name) {
-            if (name.endsWith('.html')) return '📄';
-            if (name.endsWith('.css')) return '🎨';
-            if (name.endsWith('.js')) return '⚡';
-            return '📄';
-        }
-
-        // ===== Editor =====
-        function showEditor() {
-            welcome.style.display = 'none';
-            editorSplit.style.display = 'flex';
-            codeEditor.value = files[activeFile];
-            updateLineNumbers();
-            updatePreview();
-            updateCursor();
-            panelTitle.textContent = activeFile.toUpperCase();
-        }
-
-        function updateLineNumbers() {
-            const lines = codeEditor.value.split('\n').length;
-            lineNumbers.textContent = Array.from({length: lines}, (_, i) => i + 1).join('\n');
-        }
-
-        function onInput() {
-            files[activeFile] = codeEditor.value;
-            updateLineNumbers();
-            clearTimeout(updateTimer);
-            updateTimer = setTimeout(updatePreview, 400);
-            updateCursor();
-        }
-
-        function syncScroll() {
-            lineNumbers.scrollTop = codeEditor.scrollTop;
-        }
-
-        function openFile(name) {
-            if (!openTabs.includes(name)) {
-                openTabs.push(name);
-            }
-            activeFile = name;
-            renderTabs();
-            renderFileTree();
-            showEditor();
-        }
-
-        function closeTab(name, event) {
-            event.stopPropagation();
-            openTabs = openTabs.filter(t => t !== name);
-            if (openTabs.length === 0) {
-                openTabs = ['index.html'];
-            }
-            if (activeFile === name) {
-                activeFile = openTabs[0];
-            }
-            renderTabs();
-            showEditor();
-        }
-
-        // ===== Preview =====
-        function updatePreview() {
-            let html = files['index.html'] || '';
-            
-            // Inject CSS
-            if (files['style.css']) {
-                html = html.replace('</head>', `<style>${files['style.css']}</style></head>`);
-            }
-            
-            // Inject JS
-            if (files['script.js']) {
-                html = html.replace('</body>', `<script>${files['script.js']}<\/script></body>`);
-            }
-            
-            previewFrame.srcdoc = html;
-        }
-
-        function updateCursor() {
-            const text = codeEditor.value.substring(0, codeEditor.selectionStart);
-            const lines = text.split('\n');
-            const line = lines.length;
-            const col = lines[lines.length - 1].length + 1;
-            document.getElementById('cursorPos').textContent = `Ln ${line}, Col ${col}`;
-            
-            const ext = activeFile.split('.')[1]?.toUpperCase() || 'HTML';
-            document.getElementById('fileType').textContent = ext;
-        }
-
-        // ===== Actions =====
-        function toggleSection() {
-            const header = document.querySelector('.section-header');
-            const tree = document.querySelector('.file-tree');
-            header.classList.toggle('collapsed');
-            tree.style.display = tree.style.display === 'none' ? 'block' : 'none';
-        }
-
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('collapsed');
-        }
-
-        function clearEditor() {
-            if (confirm('Clear all files?')) {
-                Object.keys(files).forEach(k => files[k] = '');
-                showEditor();
-            }
-        }
-
-        function saveAll() {
-            localStorage.setItem('vscode-data', JSON.stringify(files));
-            alert('Saved to local storage!');
-        }
-
-        function createNewFile() {
-            const name = prompt('Enter file name:', 'new.html');
-            if (name) {
-                files[name] = '';
-                openTabs.push(name);
-                activeFile = name;
-                renderFileTree();
-                renderTabs();
-                showEditor();
-            }
-        }
-
-        function newFile() {
-            createNewFile();
-        }
-
-        function toggleFullscreen() {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen();
-            } else {
-                document.exitFullscreen();
-            }
-        }
-
-        function requestFullscreen() {
-            if (document.documentElement.requestFullscreen) {
-                document.documentElement.requestFullscreen().catch(() => {});
-            }
-        }
-
-        function minimize() { history.back(); }
-        function closeApp() { if(confirm('Close?')) window.close(); }
-
-        // ===== Keyboard =====
-        document.addEventListener('keydown', (e) => {
-            if (e.ctrlKey && e.key === 's') { e.preventDefault(); saveAll(); }
-            if (e.ctrlKey && e.key === 'n') { e.preventDefault(); createNewFile(); }
-            if (e.key === 'F11') { e.preventDefault(); toggleFullscreen(); }
-        });
-
-        // ===== Load Saved =====
-        const saved = localStorage.getItem('vscode-data');
-        if (saved) {
-            try {
-                const data = JSON.parse(saved);
-                if (data && typeof data === 'object') {
-                    files = data;
-                    openTabs = Object.keys(files);
-                    activeFile = openTabs[0];
-                }
-            } catch (e) {}
-        }
-
-        // ===== Start =====
-        init();
+    <script src="script.js"></script>
+    init();
         codeEditor.focus();
     </script>
 </body>
