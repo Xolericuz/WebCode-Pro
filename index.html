@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a0a0a">
+    <title>WebCode Pro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #111111;
+            --bg-tertiary: #1a1a1a;
+            --border-color: #1f1f1f;
+            --text-primary: #e5e5e5;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --accent: #d946ef;
+            --accent-light: #ec4899;
+            --success: #22c55e;
+            --error: #ef4444;
+            --dot-red: #ff5f57;
+            --dot-yellow: #febc2e;
+            --dot-green: #28ca41;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Splash Screen */
+        #splash {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        #splash.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .logo {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            font-weight: 700;
+            margin-bottom: 32px;
+            box-shadow: 0 0 60px rgba(217, 70, 239, 0.3);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+            letter-spacing: 4px;
+            margin-bottom: 40px;
+        }
+
+        .start-btn {
+            padding: 14px 40px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            border: none;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(217, 70, 239, 0.4);
+        }
+
+        /* Main App */
+        #app {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease;
+        }
+
+        #app.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Header */
+        .header {
+            height: 50px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            -webkit-app-region: drag;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            -webkit-app-region: no-drag;
+        }
+
+        .dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.15s;
+        }
+
+        .dot:hover { transform: scale(1.2); }
+        .dot.red { background: var(--dot-red); }
+        .dot.yellow { background: var(--dot-yellow); }
+        .dot.green { background: var(--dot-green); }
+
+        .brand {
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .brand span { color: var(--accent); }
+
+        /* Workspace */
+        .workspace {
+            flex: 1;
+            display: flex;
+            gap: 1px;
+            background: var(--border-color);
+        }
+
+        .panel {
+            flex: 1;
+            background: var(--bg-secondary);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            height: 36px;
+            background: var(--bg-tertiary);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 12px;
+        }
+
+        .panel-title {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+        }
+
+        .editor-area {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .line-numbers {
+            width: 45px;
+            background: var(--bg-tertiary);
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            padding: 12px 8px;
+            text-align: right;
+            overflow: hidden;
+            user-select: none;
+            border-right: 1px solid var(--border-color);
+        }
+
+        .code-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #4ade80;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            padding: 12px;
+            resize: none;
+            outline: none;
+            overflow: auto;
+            caret-color: var(--accent);
+        }
+
+        .preview {
+            flex: 1;
+            background: #fff;
+            border: none;
+        }
+
+        /* Status Bar */
+        .status {
+            height: 28px;
+            background: var(--bg-tertiary);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 12px;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .status-left, .status-right {
+            display: flex;
+            gap: 16px;
+        }
+
+        /* Toast */
+        #toast {
+            position: fixed;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 13px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        #toast.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #52525b; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .workspace { flex-direction: column; }
+            .panel:first-child { height: 50%; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Splash -->
+    <div id="splash">
+        <div class="logo">X</div>
+        <div class="title">WEBCODE <span style="color:var(--accent)">PRO</span></div>
+        <div class="subtitle">KOD MUHARRIRI</div>
+        <button class="start-btn" onclick="startApp()">IShlga tushirish</button>
+    </div>
+
+    <!-- Main App -->
+    <div id="app">
+        <header class="header">
+            <div class="header-left">
+                <div class="dots">
+                    <button class="dot red" onclick="clearCode()" title="Tozalash"></button>
+                    <button class="dot yellow" onclick="copyCode()" title="Nusxalash"></button>
+                    <button class="dot green" onclick="fullscreen()" title="To'liq ekran"></button>
+                </div>
+                <div class="brand">WEB<span>CODE</span></div>
+            </div>
+            <button style="background:transparent;border:none;color:var(--text-muted);cursor:pointer;font-size:18px"
+                onclick="toggleMenu()">☰</button>
+        </header>
+
+        <div class="workspace">
+            <!-- Editor Panel -->
+            <div class="panel">
+                <div class="panel-header">
+                    <span class="panel-title">KOD</span>
+                </div>
+                <div class="editor-area">
+                    <div class="line-numbers" id="lines">1</div>
+                    <textarea class="code-input" id="code" spellcheck="false" 
+                        placeholder="<html>&#10;  <body>&#10;    <h1>Salom!</h1>&#10;  </body>&#10;</html>"
+                        oninput="update()" onscroll="syncScroll()"></textarea>
+                </div>
+            </div>
+
+            <!-- Preview Panel -->
+            <div class="panel">
+                <div class="panel-header">
+                    <span class="panel-title">NATIJA</span>
+                </div>
+                <iframe class="preview" id="preview" sandbox="allow-scripts"></iframe>
+            </div>
+        </div>
+
+        <!-- Status Bar -->
+        <div class="status">
+            <div class="status-left">
+                <span id="status-text">Tayyor</span>
+            </div>
+            <div class="status-right">
+                <span id="size">0 KB</span>
+                <span>UTF-8</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast"></div>
+
+    <script>
+        const splash = document.getElementById('splash');
+        const app = document.getElementById('app');
+        const code = document.getElementById('code');
+        const lines = document.getElementById('lines');
+        const preview = document.getElementById('preview');
+        const size = document.getElementById('size');
+        const statusText = document.getElementById('status-text');
+        const toast = document.getElementById('toast');
+
+        let timer;
+
+        function startApp() {
+            splash.classList.add('hidden');
+            app.classList.add('visible');
+            update();
+            fullscreen();
+            showToast('Muharrir tayyor!');
+        }
+
+        function update() {
+            // Line numbers
+            const count = code.value.split('\n').length;
+            lines.textContent = Array.from({length: count}, (_, i) => i + 1).join('\n');
+
+            // Preview
+            clearTimeout(timer);
+            timer = setTimeout(() => {
+                preview.srcdoc = code.value;
+            }, 500);
+
+            // Size
+            const bytes = new Blob([code.value]).size;
+            size.textContent = (bytes / 1024).toFixed(1) + ' KB';
+        }
+
+        function syncScroll() {
+            lines.scrollTop = code.scrollTop;
+        }
+
+        function clearCode() {
+            code.value = '';
+            update();
+            showToast('Kod tozalandi');
+        }
+
+        function copyCode() {
+            code.select();
+            document.execCommand('copy');
+            showToast('Kod nusxalandi');
+        }
+
+        function fullscreen() {
+            const el = document.documentElement;
+            if (el.requestFullscreen) el.requestFullscreen().catch(()=>{});
+            else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+        }
+
+        function showToast(msg) {
+            toast.textContent = msg;
+            toast.classList.add('visible');
+            setTimeout(() => toast.classList.remove('visible'), 2000);
+        }
+
+        // Prevent back
+        history.pushState(null, null, location.href);
+        window.onpopstate = () => {
+            history.pushState(null, null, location.href);
+        };
+    </script>
+</body>
+</html>
