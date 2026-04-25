@@ -1,215 +1,291 @@
 <!DOCTYPE html>
-<html lang="uz">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#1e1e1e">
-    <title>XOLERI𝞗 WebCode Pro</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src 'self' https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline'">
+    <title>Visual Studio Code</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-primary: #1e1e1e;
-            --bg-secondary: #252526;
-            --bg-tertiary: #2d2d30;
-            --bg-sidebar: #252526;
-            --bg-activity: #333333;
-            --border: #3c3c3c;
-            --text-primary: #cccccc;
-            --text-secondary: #858585;
+            --bg-1: #1e1e1e;
+            --bg-2: #252526;
+            --bg-3: #2d2d2d;
+            --bg-4: #333333;
+            --bg-5: #3c3c3c;
+            --fg-1: #cccccc;
+            --fg-2: #969696;
+            --fg-3: #858585;
+            --fg-4: #6e6e6e;
             --accent: #0e639c;
             --accent-hover: #1177bb;
+            --orange: #ce9178;
+            --yellow: #dcdcaa;
+            --green: #6a9955;
+            --blue: #569cd6;
+            --cyan: #4ec9b0;
+            --pink: #c586c0;
+            --red: #f44747;
+            --border: #454545;
             --tab-active: #1e1e1e;
-            --tab-inactive: #2d2d30;
-            --line-number: #858585;
-            --cursor: #ffffff;
+            --tab-inactive: #2d2d2d;
+            --line-num: #858585;
             --selection: #264f78;
-            --dot-red: #ff5f57;
-            --dot-yellow: #febc2e;
-            --dot-green: #28ca41;
-            --font-ui: 'Segoe UI', sans-serif;
-            --font-code: 'JetBrains Mono', monospace;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         html, body {
             width: 100%; height: 100%;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            font-family: var(--font-ui);
+            background: var(--bg-1);
+            color: var(--fg-1);
+            font-family: 'Segoe UI', -apple-system,BlinkMacSystemFont, sans-serif;
             font-size: 13px;
             overflow: hidden;
-        }
-
-        /* Main Layout */
-        .app { display: flex; flex-direction: column; height: 100vh; }
-        
-        /* Title Bar */
-        .titlebar {
-            height: 32px;
-            background: var(--bg-tertiary);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 12px;
-            -webkit-app-region: drag;
             user-select: none;
         }
 
-        .titlebar-left { display: flex; align-items: center; gap: 12px; -webkit-app-region: no-drag; }
-        
-        .dots { display: flex; gap: 8px; }
-        .dot { width: 12px; height: 12px; border-radius: 50%; border: none; cursor: pointer; }
-        .dot.red { background: var(--dot-red); }
-        .dot.yellow { background: var(--dot-yellow); }
-        .dot.green { background: var(--dot-green); }
-        
-        .title { font-size: 12px; color: var(--text-secondary); }
+        * { scrollbar-width: thin; scrollbar-color: var(--bg-5) transparent; }
+        ::-webkit-scrollbar { width: 10px; height: 10px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--bg-5); border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--fg-4); }
 
-        .titlebar-right { display: flex; -webkit-app-region: no-drag; }
-        .titlebar-btn {
-            width: 46px; height: 32px;
-            background: transparent;
-            border: none;
-            color: var(--text-secondary);
-            cursor: pointer;
-            font-size: 10px;
+        .app { display: flex; flex-direction: column; height: 100vh; width: 100%; }
+
+        /* Title Bar */
+        .titlebar {
+            height: 30px;
+            background: var(--bg-3);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 8px;
+            -webkit-app-region: drag;
+            font-size: 12px;
         }
-        .titlebar-btn:hover { background: rgba(255,255,255,0.1); }
+
+        .titlebar-left { display: flex; align-items: center; gap: 8px; -webkit-app-region: no-drag; }
+        
+        .window-controls { display: flex; gap: 8px; }
+        .window-btn { 
+            width: 12px; height: 12px; border-radius: 50%; border: none; cursor: pointer; 
+            display: flex; align-items: center; justify-content: center;
+        }
+        .red { background: #ff5f57; }
+        .yellow { background: #febc2e; }
+        .green { background: #28ca41; }
+
+        .title { 
+            margin-left: 12px; font-size: 13px; 
+            background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💜</text></svg>") no-repeat left center;
+            padding-left: 24px;
+        }
+
+        .titlebar-right { display: flex; -webkit-app-region: no-drag; position: relative; z-index: 100; }
+        .titlebar-btn {
+            width: 46px; height: 30px;
+            background: transparent; border: none;
+            color: var(--fg-2);
+            cursor: pointer;
+            font-size: 11px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .titlebar-btn:hover { background: rgba(255,255,255,0.1); color: var(--fg-1); }
 
         /* Menu Bar */
         .menubar {
             height: 35px;
-            background: var(--bg-secondary);
+            background: var(--bg-2);
             border-bottom: 1px solid var(--border-color);
             display: flex;
             align-items: center;
-            padding: 0 10px;
+            padding: 0 8px;
         }
 
         .menu-item {
             padding: 6px 12px;
-            color: var(--text-primary);
+            color: var(--fg-1);
             cursor: pointer;
             font-size: 13px;
             border-radius: 4px;
         }
         .menu-item:hover { background: rgba(255,255,255,0.1); }
 
-        .search-box {
+        .search-container {
             margin-left: auto;
-            background: var(--bg-primary);
+            position: relative;
+        }
+        .search {
+            background: var(--bg-1);
             border: 1px solid var(--border-color);
             border-radius: 6px;
-            padding: 4px 10px;
-            color: var(--text-primary);
+            padding: 4px 8px 4px 28px;
+            color: var(--fg-1);
             font-size: 12px;
-            width: 200px;
+            width: 180px;
+            outline: none;
+        }
+        .search:focus { border-color: var(--accent); }
+        .search-icon {
+            position: absolute; left: 8px; top: 50%;
+            transform: translateY(-50%);
+            color: var(--fg-3);
+            font-size: 11px;
         }
 
-        /* Main Content */
-        .main {
-            flex: 1;
-            display: flex;
-            overflow: hidden;
-        }
+        /* Main */
+        .main { flex: 1; display: flex; overflow: hidden; }
 
         /* Activity Bar */
         .activitybar {
             width: 50px;
-            background: var(--bg-activity);
+            background: var(--bg-3);
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding-top: 10px;
-            gap: 10px;
+            padding-top: 8px;
+            gap: 4px;
         }
 
-        .activity-icon {
-            width: 24px; height: 24px;
-            color: var(--text-secondary);
+        .activity-item {
+            width: 40px; height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--fg-3);
             cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            border-radius: 4px;
+            border-radius: 6px;
+            font-size: 24px;
+            position: relative;
         }
-        .activity-icon:hover, .activity-icon.active { color: var(--text-primary); background: rgba(255,255,255,0.1); }
+        .activity-item:hover { color: var(--fg-1); }
+        .activity-item.active { color: var(--fg-1); border-left: 2px solid var(--fg-1); background: rgba(255,255,255,0.05); }
+        .activity-item .shortcut {
+            position: absolute; right: 4px; bottom: 4px;
+            font-size: 8px; color: var(--fg-3);
+        }
 
         /* Sidebar */
         .sidebar {
-            width: 220px;
-            background: var(--bg-sidebar);
+            width: 240px;
+            min-width: 180px;
+            background: var(--bg-2);
             border-right: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
+            overflow: hidden;
         }
+        .sidebar.collapsed { width: 0; border: none; }
 
         .sidebar-header {
-            padding: 10px 16px;
+            height: 35px;
+            padding: 0 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             font-size: 11px;
             font-weight: 600;
-            letter-spacing: 1px;
-            color: var(--text-secondary);
+            letter-spacing: 0.5px;
+            color: var(--fg-2);
             text-transform: uppercase;
         }
 
-        .file-list { flex: 1; overflow: auto; }
-
-        .file-item {
-            padding: 4px 16px;
-            cursor: pointer;
+        .section-header {
+            padding: 8px 12px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: var(--fg-2);
+            text-transform: uppercase;
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 13px;
+            cursor: pointer;
         }
-        .file-item:hover { background: rgba(255,255,255,0.04); }
+        .section-header:hover { background: rgba(255,255,255,0.05); }
+
+        .section-arrow {
+            margin-right: 4px;
+            transition: transform 0.15s;
+            font-size: 10px;
+        }
+        .section-header.collapsed .section-arrow { transform: rotate(-90deg); }
+
+        .file-tree { padding: 4px 0; }
+
+        .file-item {
+            height: 22px;
+            padding: 0 12px 0 24px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: 13px;
+            color: var(--fg-1);
+        }
+        .file-item:hover { background: rgba(255,255,255,0.05); }
         .file-item.active { background: var(--selection); }
-        .file-icon { width: 16px; text-align: center; }
+        .file-item::before {
+            content: '📄';
+            font-size: 12px;
+            margin-right: 6px;
+            opacity: 0.7;
+        }
+        .file-item.html::before { content: '📄'; }
+        .file-item.css::before { content: '🎨'; }
+        .file-item.js::before { content: '⚡'; }
 
         /* Editor Area */
-        .editor-area {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            background: var(--bg-primary);
-        }
+        .editor-area { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
 
         /* Tabs */
         .tabs {
             display: flex;
-            background: var(--bg-secondary);
-            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-3);
             overflow-x: auto;
+            min-height: 35px;
         }
+        .tabs::-webkit-scrollbar { height: 3px; }
 
         .tab {
-            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
             background: var(--tab-inactive);
             border-right: 1px solid var(--border-color);
             cursor: pointer;
+            min-width: 120px;
+            max-width: 200px;
+            color: var(--fg-2);
+            font-size: 13px;
+        }
+        .tab.active {
+            background: var(--tab-active);
+            color: var(--fg-1);
+        }
+        .tab .icon { margin-right: 6px; font-size: 14px; }
+        .tab .name {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            flex: 1;
+        }
+        .tab .close {
+            margin-left: 8px;
+            width: 20px; height: 20px;
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 13px;
-            min-width: 100px;
-        }
-        .tab.active { background: var(--tab-active); }
-        .tab-close {
-            width: 16px; height: 16px;
+            justify-content: center;
             border-radius: 4px;
-            text-align: center;
-            font-size: 10px;
+            font-size: 14px;
+            opacity: 0;
         }
-        .tab-close:hover { background: rgba(255,255,255,0.2); }
+        .tab:hover .close, .tab.active .close { opacity: 1; }
+        .tab .close:hover { background: rgba(255,255,255,0.1); }
 
-        /* Editor + Preview Split */
-        .split {
-            flex: 1;
-            display: flex;
-            overflow: hidden;
-        }
+        /* Editor Split */
+        .editor-split { flex: 1; display: flex; overflow: hidden; }
 
         .editor-panel, .preview-panel {
             flex: 1;
@@ -217,52 +293,66 @@
             flex-direction: column;
             overflow: hidden;
         }
-        
+
         .preview-panel { border-left: 1px solid var(--border-color); }
 
         .panel-header {
             height: 35px;
-            background: var(--bg-secondary);
+            background: var(--bg-2);
             border-bottom: 1px solid var(--border-color);
             display: flex;
             align-items: center;
             padding: 0 12px;
             font-size: 11px;
             font-weight: 600;
-            letter-spacing: 1px;
-            color: var(--text-secondary);
+            letter-spacing: 0.5px;
+            color: var(--fg-3);
+            justify-content: space-between;
         }
+        .panel-title-group { display: flex; gap: 8px; }
+        .panel-btn {
+            background: transparent;
+            border: none;
+            color: var(--fg-3);
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+        .panel-btn:hover { background: rgba(255,255,255,0.1); color: var(--fg-1); }
 
         .editor-content {
             flex: 1;
             display: flex;
             overflow: hidden;
+            background: var(--bg-1);
         }
 
-        .line-numbers {
-            width: 50px;
-            padding: 12px 8px;
-            color: var(--line-number);
-            font-family: var(--font-code);
+        .gutter {
+            width: 55px;
+            background: var(--bg-1);
+            color: var(--line-num);
+            font-family: 'JetBrains Mono', monospace;
             font-size: 14px;
             line-height: 1.5;
+            padding: 8px 8px;
             text-align: right;
             user-select: none;
-            background: var(--bg-primary);
+            border-right: 1px solid var(--border-color);
+            overflow: hidden;
         }
 
-        .code-editor {
+        .code-area {
             flex: 1;
             background: transparent;
             border: none;
             color: #d4d4d4;
-            font-family: var(--font-code);
+            font-family: 'JetBrains Mono', monospace;
             font-size: 14px;
             line-height: 1.5;
-            padding: 12px;
+            padding: 8px 12px;
             resize: none;
             outline: none;
-            caret-color: var(--cursor);
+            caret-color: #fff;
             white-space: pre;
             overflow: auto;
         }
@@ -275,70 +365,55 @@
 
         /* Status Bar */
         .statusbar {
-            height: 24px;
+            height: 22px;
             background: var(--accent);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 12px;
+            padding: 0 8px;
             font-size: 12px;
+            color: #fff;
         }
 
-        .status-left, .status-right {
+        .status-left, .status-right { display: flex; align-items: center; gap: 12px; }
+        .status-item { display: flex; align-items: center; gap: 4px; cursor: pointer; }
+        .status-item:hover { background: rgba(255,255,255,0.2); }
+        .status-icon { font-size: 14px; }
+
+        /* Welcome Screen */
+        .welcome {
+            flex: 1;
             display: flex;
-            gap: 16px;
-        }
-
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 10px; height: 10px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #424242; border-radius: 5px; }
-        ::-webkit-scrollbar-thumb:hover { background: #4f4f4f; }
-
-        /* Modal */
-        .modal {
-            position: fixed; inset: 0;
-            background: rgba(0,0,0,0.5);
-            display: none;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
+            background: var(--bg-1);
         }
-        .modal.visible { display: flex; }
-        .modal-content {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 20px;
-            min-width: 300px;
+        .welcome-title {
+            font-size: 40px;
+            margin-bottom: 20px;
         }
-        .modal-title { font-size: 14px; margin-bottom: 16px; }
-        .modal-input {
-            width: 100%;
-            padding: 8px 12px;
-            background: var(--bg-primary);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            color: var(--text-primary);
-            margin-bottom: 12px;
+        .welcome-subtitle {
+            color: var(--fg-2);
+            margin-bottom: 40px;
         }
-        .modal-btns { display: flex; gap: 8px; justify-content: flex-end; }
-        .modal-btn {
-            padding: 6px 16px;
-            border-radius: 4px;
+        .welcome-btn {
+            padding: 12px 24px;
+            background: var(--accent);
             border: none;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 14px;
             cursor: pointer;
-            font-size: 12px;
         }
-        .modal-btn.primary { background: var(--accent); color: #fff; }
-        .modal-btn.secondary { background: var(--bg-tertiary); color: var(--text-primary); }
+        .welcome-btn:hover { background: var(--accent-hover); }
 
         /* Responsive */
         @media (max-width: 768px) {
             .sidebar { display: none; }
             .activitybar { display: none; }
-            .split { flex-direction: column; }
-            .preview-panel { border-left: none; border-top: 1px solid var(--border-color); }
+            .editor-split { flex-direction: column; }
+            .preview-panel { border-left: none; border-top: 1px solid var(--border-color); height: 50%; }
         }
     </style>
 </head>
@@ -347,65 +422,92 @@
         <!-- Title Bar -->
         <div class="titlebar">
             <div class="titlebar-left">
-                <div class="dots">
-                    <button class="dot red" onclick="clearCode()" title="Tozalash"></button>
-                    <button class="dot yellow" onclick="saveProject()" title="Saqlash"></button>
-                    <button class="dot green" onclick="toggleFullscreen()" title="To'liq ekran"></button>
+                <div class="window-controls">
+                    <button class="window-btn red" onclick="clearEditor()"></button>
+                    <button class="window-btn yellow" onclick="saveAll()"></button>
+                    <button class="window-btn green" onclick="toggleFullscreen()"></button>
                 </div>
-                <span class="title">XOLERI𝞗 WebCode Pro</span>
+                <span class="title">Visual Studio Code</span>
             </div>
             <div class="titlebar-right">
-                <button class="titlebar-btn" onclick="minimize()">─</button>
-                <button class="titlebar-btn" onclick="maximize()">□</button>
-                <button class="titlebar-btn" onclick="closeApp()">×</button>
+                <button class="titlebar-btn" onclick="minimize()">&#8211;</button>
+                <button class="titlebar-btn" onclick="toggleFullscreen()">&#9633;</button>
+                <button class="titlebar-btn" onclick="closeApp()">&#10005;</button>
             </div>
         </div>
 
         <!-- Menu Bar -->
         <div class="menubar">
             <div class="menu-item" onclick="newFile()">File</div>
-            <div class="menu-item" onclick="newFile()">View</div>
-            <div class="menu-item" onclick="showHelp()">Help</div>
-            <input type="text" class="search-box" placeholder="🔍 Search...">
+            <div class="menu-item" onclick="">Edit</div>
+            <div class="menu-item" onclick="">Selection</div>
+            <div class="menu-item" onclick="">View</div>
+            <div class="menu-item" onclick="">Go</div>
+            <div class="menu-item" onclick="">Run</div>
+            <div class="menu-item" onclick="">Terminal</div>
+            <div class="menu-item" onclick="">Help</div>
+            <div class="search-container">
+                <span class="search-icon">🔍</span>
+                <input type="text" class="search" placeholder="Search (Ctrl+Shift+F)">
+            </div>
         </div>
 
-        <!-- Main Content -->
+        <!-- Main -->
         <div class="main">
             <!-- Activity Bar -->
             <div class="activitybar">
-                <div class="activity-icon active" title="Explorer">📁</div>
-                <div class="activity-icon" title="Search">🔍</div>
-                <div class="activity-icon" title="Git">🔀</div>
-                <div class="activity-icon" title="Extensions">📦</div>
+                <div class="activity-item active" title="Explorer (Ctrl+Shift+E)">📁</div>
+                <div class="activity-item" title="Search (Ctrl+Shift+F)">🔍</div>
+                <div class="activity-item" title="Source Control (Ctrl+Shift+G)">🔀</div>
+                <div class="activity-item" title="Run and Debug (F5)">🐞</div>
+                <div class="activity-item" title="Extensions (Ctrl+Shift+X)">📦</div>
             </div>
 
             <!-- Sidebar -->
-            <div class="sidebar">
-                <div class="sidebar-header">
-                    <span>EXPLORER</span>
-                    <span onclick="newFile()" style="float:right;cursor:pointer">+</span>
+            <div class="sidebar" id="sidebar">
+                <div class="sidebar-header">Explorer</div>
+                <div class="section-header" onclick="toggleSection()">
+                    <span class="section-arrow">▼</span>
+                    WEBCODE-PROJECT
                 </div>
-                <div class="file-list" id="fileList"></div>
+                <div class="file-tree" id="fileTree"></div>
             </div>
 
-            <!-- Editor Area -->
+            <!-- Editor -->
             <div class="editor-area">
+                <!-- Tabs -->
                 <div class="tabs" id="tabs"></div>
-                
-                <div class="split">
+
+                <!-- Welcome -->
+                <div class="welcome" id="welcome">
+                    <div class="welcome-title">💜</div>
+                    <div class="welcome-subtitle">Visual Studio Code</div>
+                    <button class="welcome-btn" onclick="createNewFile()">New File</button>
+                </div>
+
+                <!-- Editor Split -->
+                <div class="editor-split" id="editorSplit" style="display:none;">
                     <div class="editor-panel">
-                        <div class="panel-header">INDEX.HTML</div>
+                        <div class="panel-header">
+                            <span class="panel-title-group" id="panelTitle">MAIN</span>
+                            <div>
+                                <button class="panel-btn" title="Format Document">⚡</button>
+                                <button class="panel-btn" title="Word Wrap">📝</button>
+                            </div>
+                        </div>
                         <div class="editor-content">
-                            <div class="line-numbers" id="lineNumbers">1</div>
-                            <textarea class="code-editor" id="codeEditor" spellcheck="false"
-                                placeholder="<!-- Kodni bu yerga yozing -->&#10;<html>&#10;  <head>&#10;    <title>Salom</title>&#10;  </head>&#10;  <body>&#10;    <h1>Salom, WebCode Pro!</h1>&#10;  </body>&#10;</html>"
-                                oninput="handleInput()" onscroll="syncScroll()"></textarea>
+                            <div class="gutter" id="lineNumbers">1</div>
+                            <textarea class="code-area" id="codeEditor" spellcheck="false"
+                                oninput="onInput()" onscroll="syncScroll()" onclick="updateCursor()"></textarea>
                         </div>
                     </div>
-                    
                     <div class="preview-panel">
-                        <div class="panel-header">NATIJA</div>
-                        <iframe class="preview-frame" id="previewFrame" sandbox="allow-scripts"></iframe>
+                        <div class="panel-header">
+                            <span>PREVIEW</span>
+                            <button class="panel-btn" title="Refresh">↻</button>
+                            <button class="panel-btn" title="Open in Browser">↗</button>
+                        </div>
+                        <iframe class="preview-frame" id="previewFrame" sandbox="allow-scripts allow-modals"></iframe>
                     </div>
                 </div>
             </div>
@@ -414,103 +516,147 @@
         <!-- Status Bar -->
         <div class="statusbar">
             <div class="status-left">
-                <span>main*</span>
-                <span id="errors">0 errors</span>
+                <div class="status-item" onclick="toggleSidebar()">
+                    <span>🌐</span>
+                    <span>main*</span>
+                </div>
+                <div class="status-item">
+                    <span>❌</span>
+                    <span id="errors">0 errors, 0 warnings</span>
+                </div>
             </div>
             <div class="status-right">
-                <span>Ln 1, Col 1</span>
-                <span>UTF-8</span>
-                <span>HTML</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal -->
-    <div class="modal" id="modal">
-        <div class="modal-content">
-            <div class="modal-title" id="modalTitle">Yangi fayl</div>
-            <input type="text" class="modal-input" id="modalInput" placeholder="fayl nomi">
-            <div class="modal-btns">
-                <button class="modal-btn secondary" onclick="closeModal()">Bekor</button>
-                <button class="modal-btn primary" onclick="confirmModal()">Yaratish</button>
+                <div class="status-item" id="cursorPos">Ln 1, Col 1</div>
+                <div class="status-item">UTF-8</div>
+                <div class="status-item" id="fileType">HTML</div>
+                <div class="status-item">
+                    <span>📄</span>
+                    <span id="encoding">LF</span>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Project Data
+        // ===== Data =====
         let files = {
-            'index.html': `<!-- Kodni bu yerga yozing -->
-<!DOCTYPE html>
-<html lang="uz">
+            'index.html': `<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>WebCode Pro</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background: #0a0a0a;
-            color: #fff;
-        }
-        h1 {
-            color: #d946ef;
-            text-shadow: 0 0 20px rgba(217,70,239,0.5);
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Website</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>💜 WebCode Pro</h1>
+    <div class="container">
+        <h1>💜 Hello VS Code!</h1>
+        <p>Welcome to your new editor.</p>
+        <button onclick="sayHello()">Click Me</button>
+    </div>
+    <script src="script.js"><\/script>
 </body>
 </html>`,
-            'style.css': `/* Styles */
-:root {
-    --primary: #d946ef;
+            'style.css': `/* Main Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+}
+
+.container {
+    text-align: center;
+    padding: 40px;
+}
+
+h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    background: linear-gradient(90deg, #d946ef, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+p {
+    font-size: 1.2rem;
+    color: #9ca3af;
+    margin-bottom: 20px;
+}
+
+button {
+    padding: 12px 32px;
+    font-size: 1rem;
+    background: #d946ef;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+button:hover {
+    background: #8b5cf6;
+    transform: translateY(-2px);
 }`,
-            'script.js': `// JavaScript
-console.log('Salom WebCode Pro!');`
+            'script.js': `// Main Script
+function sayHello() {
+    alert('Hello from VS Code! 💜');
+}
+
+console.log('VS Code loaded successfully!');`
         };
 
-        let tabs = ['index.html'];
-        let activeTab = 'index.html';
+        let openTabs = ['index.html'];
+        let activeFile = 'index.html';
+        let updateTimer;
 
-        // Elements
-        const fileList = document.getElementById('fileList');
+        // ===== Elements =====
+        const fileTree = document.getElementById('fileTree');
         const tabsContainer = document.getElementById('tabs');
         const codeEditor = document.getElementById('codeEditor');
         const lineNumbers = document.getElementById('lineNumbers');
         const previewFrame = document.getElementById('previewFrame');
-        const lineNumbersPanel = document.querySelector('.panel-header');
+        const editorSplit = document.getElementById('editorSplit');
+        const welcome = document.getElementById('welcome');
+        const panelTitle = document.getElementById('panelTitle');
 
-        let timer, cursorTimer;
-
-        // Initialize
+        // ===== Init =====
         function init() {
-            renderFiles();
+            renderFileTree();
             renderTabs();
-            updateEditor();
+            showEditor();
             requestFullscreen();
         }
 
-        function renderFiles() {
-            fileList.innerHTML = Object.keys(files).map(name => `
-                <div class="file-item ${name === activeTab ? 'active' : ''}" onclick="openFile('${name}')">
-                    <span class="file-icon">${getIcon(name)}</span>
-                    <span>${name}</span>
+        // ===== File Tree =====
+        function renderFileTree() {
+            fileTree.innerHTML = Object.keys(files).map(name => `
+                <div class="file-item ${name.split('.')[1]}" 
+                     data-file="${name}"
+                     onclick="openFile('${name}')">
+                    ${name}
                 </div>
             `).join('');
         }
 
+        // ===== Tabs =====
         function renderTabs() {
-            tabsContainer.innerHTML = tabs.map(name => `
-                <div class="tab ${name === activeTab ? 'active' : ''}" onclick="openFile('${name}')">
-                    <span>${getIcon(name)}</span>
-                    <span>${name}</span>
-                    <span class="tab-close" onclick="closeTab('${name}', event)">×</span>
+            tabsContainer.innerHTML = openTabs.map(name => `
+                <div class="tab ${name === activeFile ? 'active' : ''}" 
+                     onclick="openFile('${name}')">
+                    <span class="icon">${getIcon(name)}</span>
+                    <span class="name">${name}</span>
+                    <span class="close" onclick="closeTab('${name}', event)">✕</span>
                 </div>
             `).join('');
         }
@@ -522,33 +668,15 @@ console.log('Salom WebCode Pro!');`
             return '📄';
         }
 
-        function openFile(name) {
-            activeTab = name;
-            renderFiles();
-            renderTabs();
-            updateEditor();
-        }
-
-        function closeTab(name, event) {
-            event.stopPropagation();
-            tabs = tabs.filter(t => t !== name);
-            if (tabs.length === 0) {
-                tabs = ['index.html'];
-            }
-            if (activeTab === name) {
-                activeTab = tabs[0];
-            }
-            renderTabs();
-            renderFiles();
-            updateEditor();
-        }
-
-        function updateEditor() {
-            codeEditor.value = files[activeTab] || '';
-            lineNumbersPanel.textContent = activeTab.toUpperCase();
+        // ===== Editor =====
+        function showEditor() {
+            welcome.style.display = 'none';
+            editorSplit.style.display = 'flex';
+            codeEditor.value = files[activeFile];
             updateLineNumbers();
             updatePreview();
             updateCursor();
+            panelTitle.textContent = activeFile.toUpperCase();
         }
 
         function updateLineNumbers() {
@@ -556,11 +684,11 @@ console.log('Salom WebCode Pro!');`
             lineNumbers.textContent = Array.from({length: lines}, (_, i) => i + 1).join('\n');
         }
 
-        function handleInput() {
-            files[activeTab] = codeEditor.value;
+        function onInput() {
+            files[activeFile] = codeEditor.value;
             updateLineNumbers();
-            clearTimeout(timer);
-            timer = setTimeout(updatePreview, 500);
+            clearTimeout(updateTimer);
+            updateTimer = setTimeout(updatePreview, 400);
             updateCursor();
         }
 
@@ -568,15 +696,39 @@ console.log('Salom WebCode Pro!');`
             lineNumbers.scrollTop = codeEditor.scrollTop;
         }
 
+        function openFile(name) {
+            if (!openTabs.includes(name)) {
+                openTabs.push(name);
+            }
+            activeFile = name;
+            renderTabs();
+            renderFileTree();
+            showEditor();
+        }
+
+        function closeTab(name, event) {
+            event.stopPropagation();
+            openTabs = openTabs.filter(t => t !== name);
+            if (openTabs.length === 0) {
+                openTabs = ['index.html'];
+            }
+            if (activeFile === name) {
+                activeFile = openTabs[0];
+            }
+            renderTabs();
+            showEditor();
+        }
+
+        // ===== Preview =====
         function updatePreview() {
             let html = files['index.html'] || '';
             
-            // Inject CSS if exists
+            // Inject CSS
             if (files['style.css']) {
                 html = html.replace('</head>', `<style>${files['style.css']}</style></head>`);
             }
             
-            // Inject JS if exists  
+            // Inject JS
             if (files['script.js']) {
                 html = html.replace('</body>', `<script>${files['script.js']}<\/script></body>`);
             }
@@ -589,51 +741,50 @@ console.log('Salom WebCode Pro!');`
             const lines = text.split('\n');
             const line = lines.length;
             const col = lines[lines.length - 1].length + 1;
-            document.querySelector('.status-right').innerHTML = `
-                <span>Ln ${line}, Col ${col}</span>
-                <span>UTF-8</span>
-                <span>${activeTab.split('.')[1].toUpperCase()}</span>
-            `;
+            document.getElementById('cursorPos').textContent = `Ln ${line}, Col ${col}`;
+            
+            const ext = activeFile.split('.')[1]?.toUpperCase() || 'HTML';
+            document.getElementById('fileType').textContent = ext;
         }
 
-        // File Operations
-        function newFile() {
-            document.getElementById('modalTitle').textContent = 'Yangi fayl yaratish';
-            document.getElementById('modalInput').value = '';
-            document.getElementById('modal').classList.add('visible');
-            document.getElementById('modalInput').focus();
+        // ===== Actions =====
+        function toggleSection() {
+            const header = document.querySelector('.section-header');
+            const tree = document.querySelector('.file-tree');
+            header.classList.toggle('collapsed');
+            tree.style.display = tree.style.display === 'none' ? 'block' : 'none';
         }
 
-        function confirmModal() {
-            const name = document.getElementById('modalInput').value.trim();
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('collapsed');
+        }
+
+        function clearEditor() {
+            if (confirm('Clear all files?')) {
+                Object.keys(files).forEach(k => files[k] = '');
+                showEditor();
+            }
+        }
+
+        function saveAll() {
+            localStorage.setItem('vscode-data', JSON.stringify(files));
+            alert('Saved to local storage!');
+        }
+
+        function createNewFile() {
+            const name = prompt('Enter file name:', 'new.html');
             if (name) {
                 files[name] = '';
-                if (!tabs.includes(name)) {
-                    tabs.push(name);
-                }
-                activeTab = name;
-                renderFiles();
+                openTabs.push(name);
+                activeFile = name;
+                renderFileTree();
                 renderTabs();
-                updateEditor();
+                showEditor();
             }
-            closeModal();
         }
 
-        function closeModal() {
-            document.getElementById('modal').classList.remove('visible');
-        }
-
-        // Window Controls
-        function clearCode() {
-            codeEditor.value = '';
-            files[activeTab] = '';
-            updateLineNumbers();
-            updatePreview();
-        }
-
-        function saveProject() {
-            localStorage.setItem('webcode-pro', JSON.stringify(files));
-            alert('Saqlandi!');
+        function newFile() {
+            createNewFile();
         }
 
         function toggleFullscreen() {
@@ -646,61 +797,36 @@ console.log('Salom WebCode Pro!');`
 
         function requestFullscreen() {
             if (document.documentElement.requestFullscreen) {
-                document.documentElement.requestFullscreen().catch(()=>{});
+                document.documentElement.requestFullscreen().catch(() => {});
             }
         }
 
-        function minimize() {
-            document.documentElement.requestFullscreen || document.webkitExitFullscreen;
-        }
+        function minimize() { history.back(); }
+        function closeApp() { if(confirm('Close?')) window.close(); }
 
-        function maximize() {
-            toggleFullscreen();
-        }
-
-        function closeApp() {
-            if (confirm('Chiqishni xohlaysizmi?')) {
-                window.close();
-            }
-        }
-
-        function showHelp() {
-            alert('XOLERI𝞗 WebCode Pro\n\nCtrl+S - Saqlash\nCtrl+N - Yangi fayl\nF11 - To\'liq ekran');
-        }
-
-        // Keyboard shortcuts
+        // ===== Keyboard =====
         document.addEventListener('keydown', (e) => {
-            if (e.ctrlKey && e.key === 's') {
-                e.preventDefault();
-                saveProject();
-            }
-            if (e.ctrlKey && e.key === 'n') {
-                e.preventDefault();
-                newFile();
-            }
-            if (e.key === 'F11') {
-                e.preventDefault();
-                toggleFullscreen();
-            }
+            if (e.ctrlKey && e.key === 's') { e.preventDefault(); saveAll(); }
+            if (e.ctrlKey && e.key === 'n') { e.preventDefault(); createNewFile(); }
+            if (e.key === 'F11') { e.preventDefault(); toggleFullscreen(); }
         });
 
-        // Prevent back
-        history.pushState(null, null, location.href);
-        window.onpopstate = () => {
-            history.pushState(null, null, location.href);
-            requestFullscreen();
-        };
-
-        // Load saved
-        const saved = localStorage.getItem('webcode-pro');
+        // ===== Load Saved =====
+        const saved = localStorage.getItem('vscode-data');
         if (saved) {
-            files = JSON.parse(saved);
-            tabs = Object.keys(files);
-            activeTab = tabs[0] || 'index.html';
+            try {
+                const data = JSON.parse(saved);
+                if (data && typeof data === 'object') {
+                    files = data;
+                    openTabs = Object.keys(files);
+                    activeFile = openTabs[0];
+                }
+            } catch (e) {}
         }
 
-        // Start
+        // ===== Start =====
         init();
+        codeEditor.focus();
     </script>
 </body>
 </html>
